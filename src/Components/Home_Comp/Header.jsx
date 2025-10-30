@@ -19,6 +19,14 @@ function Header() {
   const [newsCount, setNewsCount] = useState(0);
   const [eventsCount, setEventsCount] = useState(0);
 
+  // Social media links
+  const socialMediaLinks = [
+    { Icon: FaLinkedinIn, url: "https://www.linkedin.com/company/irisehub/?originalSubdomain=so" },
+    { Icon: FaXTwitter, url: "https://twitter.com/irisehub" },
+    { Icon: IoLogoInstagram, url: "https://www.instagram.com/irise_hub/" },
+    { Icon: FaFacebookF, url: "https://www.facebook.com/irisehub" },
+  ];
+
   const toggleMenu = () => setIsMenuOpen((open) => !open);
 
   const handleMouseEnter = () => {
@@ -90,10 +98,10 @@ function Header() {
         </Link>
 
         {/* ✅ Desktop Nav (hidden on small, flex on lg and up) */}
-        <nav className="hidden lg:flex gap-8   text-lg relative">
+        <nav className="hidden lg:flex gap-6   text-md relative">
           {/* Dropdown: About */}
             <div className="relative" onMouseEnter={() => setIsHoverItem("about")} onMouseLeave={() => setIsHoverItem(null)}>
-                <Link to="/about"> <li className="items-center flex gap-1 mb-2"> About  </li> </Link>
+                <Link to="/about"> <li className="items-center flex gap-1  hover:border-b hover:border-b-[1.5px] hover:text-iriseColor"> About  </li> </Link>
                 {/* <Link to="/about"> <li className="items-center flex gap-1 mb-2"> About  <PiCaretDownBold className={`${isHoverItem === "about" ? "rotate-180 transition-transform duration-300 ease-in-out" : "rotate-0"}`} /> </li> </Link> */}
                 {/* { isHoverItem === "about" && (
                 <div className={`w-[200px] py-4 px-3 transition-transform duration-10 bg-white absolute top-full left-0 rounded-md z-30 shadow-md shadow-black`}>
@@ -108,7 +116,7 @@ function Header() {
 
             {/* Dropdown: Ecosystem */}
             <div className="relative" onMouseEnter={() => setIsHoverItem("ecosystem")} onMouseLeave={() => setIsHoverItem(null)}>
-                <Link to="/ecosystem"> <li className="items-center flex gap-1 mb-2"> Ecosystem  <PiCaretDownBold className={`${isHoverItem === "    ecosystem" ? "rotate-180 transition-transform duration-300 ease-in-out" : "rotate-0"}`} /> </li> </Link>
+                <Link to="/ecosystem"> <li className="items-center flex gap-1 hover:border-b hover:border-b-[1.5px] hover:text-iriseColor"> Ecosystem  <PiCaretDownBold className={`${isHoverItem === "    ecosystem" ? "rotate-180 transition-transform duration-300 ease-in-out" : "rotate-0"}`} /> </li> </Link>
                 { isHoverItem === "ecosystem" && (
                 <div className={`w-[210px] py-4 px-3 transition-transform duration-10 bg-white absolute top-full left-0 rounded-md z-30 shadow-md shadow-black`}>
                 <ul className="leading-[35px] text-[16px] font-normal text-black">
@@ -123,20 +131,21 @@ function Header() {
                 </div>
 
           {/* ✅ Simple links kept for desktop */}
-          <Link to="/areasWe">Areas We Focus</Link>
-          <Link to="/community">Community</Link>
-          <Link to="/startups">Startups</Link>
+          <Link className="hover:border-b hover:border-b-[1.5px] hover:text-iriseColor" to="/areasWe">Areas We Focus</Link>
+          <Link className="hover:border-b hover:border-b-[1.5px] hover:text-iriseColor" to="/community">Community</Link>
+          <Link className="hover:border-b hover:border-b-[1.5px] hover:text-iriseColor" to="/startups">Startups</Link>
           
           {/* News & Events Dropdown */}
           <div 
             className="relative"
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
-          >
-            <button className="flex items-center gap-1 hover:text-iriseColor transition-colors">
-              News & Events
-              <PiCaretDownBold className="text-xs" />
-            </button>
+          > 
+          <Link>
+            <li className="flex items-center gap-1 hover:text-iriseColor hover:border-b hover:border-b-[1.5px] transition-colors">
+              News & Events <PiCaretDownBold className="text-xs" />
+            </li>
+          </Link>
             
             {showNewsEventsDropdown && (
               <div 
@@ -146,24 +155,24 @@ function Header() {
               >
               <Link
                 to="/news"
-                className="block px-4 py-3 text-gray-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 hover:text-blue-600 transition-all duration-200 font-medium"
+                className="block px-4 py-3 hover:underline pb-4"
                 onClick={() => setShowNewsEventsDropdown(false)}
               >
-                📰 News ({newsCount})
+                News
               </Link>
               <Link
                 to="/upcoming-events"
-                className="block px-4 py-3 text-gray-700 hover:bg-gradient-to-r hover:from-green-50 hover:to-emerald-50 hover:text-green-600 transition-all duration-200 font-medium"
+                className="block px-4 py-3 hover:underline pb-4"
                 onClick={() => setShowNewsEventsDropdown(false)}
               >
-                🚀 Upcoming Events
+                Upcoming Events
               </Link>
               <Link
                 to="/past-events"
-                className="block px-4 py-3 text-gray-700 hover:bg-gradient-to-r hover:from-gray-50 hover:to-slate-50 hover:text-gray-600 transition-all duration-200 font-medium"
+                className="block px-4 py-3  hover:underline pb-4"
                 onClick={() => setShowNewsEventsDropdown(false)}
               >
-                📚 Past Events
+                Past Events
               </Link>
               </div>
             )}
@@ -172,16 +181,20 @@ function Header() {
 
         {/* ✅ Social icons visible only on desktop */}
         <div className="hidden lg:flex gap-4">
-          {[FaLinkedinIn, FaXTwitter, IoLogoInstagram, FaFacebookF].map(
-            (Icon, i) => (
-              <div
+          {socialMediaLinks.map((social, i) => {
+            const Icon = social.Icon;
+            return (
+              <a
                 key={i}
+                href={social.url}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-[35px] h-[35px] bg-white shadow-md inset rounded-full flex items-center justify-center text-black hover:bg-iriseColor hover:text-white transition transform hover:scale-110"
               >
                 <Icon className="text-lg" />
-              </div>
-            )
-          )}
+              </a>
+            );
+          })}
         </div>
 
         {/* ✅ Mobile Menu Button (hidden on desktop) */}
@@ -233,16 +246,20 @@ function Header() {
 
           {/* ✅ Added social icons to mobile menu */}
           <div className="flex gap-4 mt-6">
-            {[FaLinkedinIn, FaXTwitter, IoLogoInstagram, FaFacebookF].map(
-              (Icon, i) => (
-                <div
+            {socialMediaLinks.map((social, i) => {
+              const Icon = social.Icon;
+              return (
+                <a
                   key={i}
+                  href={social.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="w-[35px] h-[35px] md:w-[45px] md:h-[45px] bg-black text-white rounded-full flex items-center justify-center hover:bg-iriseColor transition transform hover:scale-110"
                 >
                   <Icon className="text-lg" />
-                </div>
-              )
-            )}
+                </a>
+              );
+            })}
           </div>
         </div>
       )}
